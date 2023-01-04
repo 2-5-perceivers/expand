@@ -1,6 +1,6 @@
 name: expandable_tile
 description: A package that provides a expandable tile with controllers
-version: 1.0.0
+version: 1.0.1
 homepage: https://github.com/2-5-perceivers/expandable-tile
 
 environment:
