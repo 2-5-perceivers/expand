@@ -107,31 +107,31 @@ class _ExpandableTileState extends State<ExpandableTile>
   late final Animatable<double> _animationCurve;
   late Animatable<double> _halfTween;
 
-  late Animatable<double> _cardElevationTween;
-  late Animatable<ShapeBorder?> _cardShapeTween;
-  late Animatable<EdgeInsets> _cardMarginTween;
-  late Animatable<EdgeInsets> _cardPaddingTween;
+  Animatable<double>? _cardElevationTween;
+  Animatable<ShapeBorder?>? _cardShapeTween;
+  Animatable<EdgeInsets>? _cardMarginTween;
+  Animatable<EdgeInsets>? _cardPaddingTween;
 
-  late AnimationController _controller;
-  late Animation<double> _iconTurns;
-  late Animation<double> _heightFactor;
+  AnimationController? _controller;
+  Animation<double>? _iconTurns;
+  Animation<double>? _heightFactor;
 
-  late Animation<double> _cardElevation;
-  late Animation<ShapeBorder?> _cardShape;
-  late Animation<EdgeInsets> _cardMargin;
-  late Animation<EdgeInsets> _cardPadding;
+  Animation<double>? _cardElevation;
+  Animation<ShapeBorder?>? _cardShape;
+  Animation<EdgeInsets>? _cardMargin;
+  Animation<EdgeInsets>? _cardPadding;
 
-  late EdgeInsets marginCollapsed;
-  late EdgeInsets marginExpanded;
+  EdgeInsets? marginCollapsed;
+  EdgeInsets? marginExpanded;
 
-  late EdgeInsets paddingCollapsed;
-  late EdgeInsets paddingExpanded;
+  EdgeInsets? paddingCollapsed;
+  EdgeInsets? paddingExpanded;
 
-  late ShapeBorder shapeCollapsed;
-  late ShapeBorder shapeExpanded;
+  ShapeBorder? shapeCollapsed;
+  ShapeBorder? shapeExpanded;
 
-  late double elevationCollapsed;
-  late double elevationExpanded;
+  double? elevationCollapsed;
+  double? elevationExpanded;
 
   bool _expanded = false;
 
@@ -163,43 +163,45 @@ class _ExpandableTileState extends State<ExpandableTile>
     _animationCurve = CurveTween(curve: Curves.easeInOutCubic);
     _halfTween = Tween<double>(begin: 0.0, end: 0.5);
 
-    _heightFactor = _controller.drive(_animationCurve);
-    _iconTurns = _controller.drive(_halfTween.chain(_animationCurve));
+    _heightFactor = _controller!.drive(_animationCurve);
+    _iconTurns = _controller!.drive(_halfTween.chain(_animationCurve));
 
     expanded = widget.initiallyExpanded && widget.expandable;
     if (expanded) {
-      _controller.value = 1.0;
+      _controller!.value = 1.0;
     }
 
-    widget.controller?.addListener(_controllerListener);
+    widget.controller!.addListener(_controllerListener);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    if (!widget.expandable) return;
-
-    updateAnimations(context);
+    if (widget.expandable) {
+      updateAnimations(context);
+    } else {
+      updateDefaults();
+    }
   }
 
   @override
   void didUpdateWidget(final ExpandableTile oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (!widget.expandable) return;
-
-    updateAnimations(context);
+    if (widget.expandable) {
+      updateAnimations(context);
+    }
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     widget.controller?.removeListener(_controllerListener);
     super.dispose();
   }
 
-  void updateAnimations(final BuildContext context) {
+  void updateDefaults() {
     final ListTileThemeData listTileTheme = Theme.of(context).listTileTheme;
 
     marginCollapsed = widget.marginCollapsed ?? EdgeInsets.zero;
@@ -217,6 +219,10 @@ class _ExpandableTileState extends State<ExpandableTile>
 
     elevationCollapsed = widget.elevationCollapsed ?? 0;
     elevationExpanded = widget.elevationExpanded ?? 2;
+  }
+
+  void updateAnimations(final BuildContext context) {
+    updateDefaults();
 
     _cardElevationTween =
         Tween<double>(begin: elevationCollapsed, end: elevationExpanded);
@@ -230,12 +236,13 @@ class _ExpandableTileState extends State<ExpandableTile>
         EdgeInsetsTween(begin: paddingCollapsed, end: paddingExpanded);
 
     _cardElevation =
-        _controller.drive(_cardElevationTween.chain(_animationCurve));
+        _controller!.drive(_cardElevationTween!.chain(_animationCurve));
 
-    _cardShape = _controller.drive(_cardShapeTween.chain(_animationCurve));
+    _cardShape = _controller!.drive(_cardShapeTween!.chain(_animationCurve));
 
-    _cardMargin = _controller.drive(_cardMarginTween.chain(_animationCurve));
-    _cardPadding = _controller.drive(_cardPaddingTween.chain(_animationCurve));
+    _cardMargin = _controller!.drive(_cardMarginTween!.chain(_animationCurve));
+    _cardPadding =
+        _controller!.drive(_cardPaddingTween!.chain(_animationCurve));
   }
 
   void _controllerListener() {
@@ -245,12 +252,14 @@ class _ExpandableTileState extends State<ExpandableTile>
   }
 
   void _handleTap({final bool? newValue}) {
+    if (!widget.expandable) return;
+
     setState(() {
       expanded = newValue ?? !expanded;
       if (expanded) {
-        _controller.forward();
+        _controller!.forward();
       } else {
-        _controller.reverse().then<void>((final void value) {
+        _controller!.reverse().then<void>((final void value) {
           if (!mounted) {
             return;
           }
@@ -263,18 +272,20 @@ class _ExpandableTileState extends State<ExpandableTile>
   }
 
   Widget? _buildTrailing(final BuildContext context) {
-    if (!widget.rotateTrailingWhenExpanded || widget.trailing == null) {
+    if (!widget.rotateTrailingWhenExpanded ||
+        widget.trailing == null ||
+        !widget.expandable) {
       return widget.trailing;
     }
     return RotationTransition(
-      turns: _iconTurns,
+      turns: _iconTurns!,
       child: widget.trailing,
     );
   }
 
   @override
   Widget build(final BuildContext context) {
-    final bool closed = !expanded && _controller.isDismissed;
+    final bool closed = !expanded && (_controller?.isDismissed ?? true);
 
     Widget? child;
 
@@ -294,8 +305,10 @@ class _ExpandableTileState extends State<ExpandableTile>
           : null,
     );
 
+    if (!widget.expandable) return _buildChildren(context, null);
+
     return AnimatedBuilder(
-      animation: _controller.view,
+      animation: _controller!.view,
       builder: _buildChildren,
       child: closed ? null : result,
     );
@@ -305,18 +318,18 @@ class _ExpandableTileState extends State<ExpandableTile>
     final ThemeData theme = Theme.of(context);
 
     return Padding(
-      padding: _cardMargin.value,
+      padding: _cardMargin?.value ?? EdgeInsets.zero,
       child: Material(
         animationDuration: Duration.zero,
         type: MaterialType.card,
         clipBehavior: Clip.antiAlias,
-        elevation: _cardElevation.value,
+        elevation: _cardElevation?.value ?? 0.0,
         surfaceTintColor: theme.colorScheme.surfaceTint,
-        shape: _cardShape.value,
+        shape: _cardShape?.value ?? shapeCollapsed,
         child: InkWell(
           onTap: widget.expandable ? _handleTap : null,
           child: Padding(
-            padding: _cardPadding.value,
+            padding: _cardPadding?.value ?? EdgeInsets.zero,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -330,7 +343,7 @@ class _ExpandableTileState extends State<ExpandableTile>
                 ClipRect(
                   child: Align(
                     alignment: Alignment.center,
-                    heightFactor: _heightFactor.value,
+                    heightFactor: _heightFactor?.value ?? 0,
                     child: child,
                   ),
                 ),
