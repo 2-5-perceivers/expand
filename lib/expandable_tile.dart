@@ -318,18 +318,18 @@ class _ExpandableTileState extends State<ExpandableTile>
     final ThemeData theme = Theme.of(context);
 
     return Padding(
-      padding: _cardMargin?.value ?? EdgeInsets.zero,
+      padding: _cardMargin?.value ?? marginCollapsed!,
       child: Material(
         animationDuration: Duration.zero,
         type: MaterialType.card,
         clipBehavior: Clip.antiAlias,
-        elevation: _cardElevation?.value ?? 0.0,
+        elevation: _cardElevation?.value ?? elevationCollapsed!,
         surfaceTintColor: theme.colorScheme.surfaceTint,
         shape: _cardShape?.value ?? shapeCollapsed,
         child: InkWell(
           onTap: widget.expandable ? _handleTap : null,
           child: Padding(
-            padding: _cardPadding?.value ?? EdgeInsets.zero,
+            padding: _cardPadding?.value ?? paddingCollapsed!,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
