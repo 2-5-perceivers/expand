@@ -1,39 +1,64 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Expand
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+<div align="center">
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+  [![GitHub stars][github_stars_badge]][github_stars_link]
+  [![Package: master_detail_flow][package_badge]][package_link]
+  [![Language: Dart][language_badge]][language_link]
+  [![License: MIT][license_badge]][license_link]
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+</div>
 
-## Features
+[github_stars_badge]: https://img.shields.io/github/stars/2-5-perceivers/expand?style=flat&color=yellow
+[github_stars_link]: https://github.com/2-5-perceivers/expand/stargazers
+[package_badge]: https://img.shields.io/pub/v/expand?color=green
+[package_link]: https://pub.dev/packages/expand
+[language_badge]: https://img.shields.io/badge/language-Dart-blue
+[language_link]: https://dart.dev
+[license_badge]: https://img.shields.io/github/license/2-5-perceivers/expand
+[license_link]: https://opensource.org/licenses/MIT
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+**expand** is a Flutter package designed to help creating sleek, fast and simple expandable widgets, using minimum code.
+
+![Demo Gif](https://github.com/2-5-perceivers/expand/blob/master/images/demo.gif?raw=true)
+
+## Installation
+
+To use this package, add master_detail_flow as a dependency using:
+```
+flutter pub add expand
+```
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Wrap any list of expandable widgets in a ExpandableProvider, and you are done.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Here is a basic example of how to use `ExpandableTile`:
 
 ```dart
-const like = 'sample';
+ExpandableProvider(
+child: ListView(
+  children: [
+    ExpandableTile(
+      title: const Text('Tile 1'),
+      detailsBuilder: (context) => Container(height: 200),
+    ),
+    ExpandableTile(
+      title: const Text('Tile 2'),
+      detailsBuilder: (context) => Container(height: 200),
+    ),
+  ],
+),
+),
 ```
 
-## Additional information
+The use of ExpandableProvider can be skipped using an `ExpandableController` that can be provided manually.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+### Key components
+* `ExpandableProvider` + `ExpandableController`: the state providers for expansion cards
+* `ExpandableCard`: The base of all expandable widgets
+* `ExpandableTile`: An ListTile with expandable details
+
+For further details, visit the [documentation](https://pub.dev/documentation/expand/latest/).

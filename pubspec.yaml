@@ -1,19 +1,27 @@
-name: expandable_tile
-description: A package that provides a expandable tile with controllers
-version: 1.0.1
-homepage: https://github.com/2-5-perceivers/expandable-tile
+name: expand
+description: A package designed to help you easily create sleek and fast expandable widgets.
+version: 1.1.0
+repository: https://github.com/2-5-perceivers/expand
+funding:
+  - https://github.com/sponsors/rares45
+  - https://buymeacoffee.com/raresvanca
+topics:
+  - expandable
+  - widgets
+  - material
+screenshots:
+  - description: Opening and closing the expandable widgets
+    path: images/demo.gif
 
 environment:
-  sdk: '>=2.18.2 <3.0.0'
-  flutter: ">=3.2.0"
+  sdk: '>=3.4.4 <4.0.0'
+  flutter: ">=3.24.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  flutter_lints: ^2.0.0
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-
-flutter:
