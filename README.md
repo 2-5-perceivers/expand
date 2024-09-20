@@ -24,7 +24,7 @@
 
 ## Installation
 
-To use this package, add master_detail_flow as a dependency using:
+To use this package, add expand as a dependency using:
 ```
 flutter pub add expand
 ```
