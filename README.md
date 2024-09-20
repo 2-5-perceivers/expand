@@ -3,7 +3,7 @@
 <div align="center">
 
   [![GitHub stars][github_stars_badge]][github_stars_link]
-  [![Package: master_detail_flow][package_badge]][package_link]
+  [![Package: expand][package_badge]][package_link]
   [![Language: Dart][language_badge]][language_link]
   [![License: MIT][license_badge]][license_link]
 
