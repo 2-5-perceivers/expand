@@ -131,15 +131,16 @@ class ExpandableTile extends StatelessWidget {
         elevationExpanded: elevationExpanded,
         rotateTrailingWhenExpanded: rotateTrailingWhenExpanded,
         initiallyExpanded: initiallyExpanded,
-        advancedChildBuilder: (context, trailingBuilder, onTap, _) => ListTile(
-          onTap: onTap,
-          title: title,
-          subtitle: subtitle,
-          visualDensity: visualDensity,
-          dense: dense,
-          isThreeLine: isThreeLine,
-          leading: leading,
-          trailing: trailing == null ? null : trailingBuilder(trailing!),
+        childBuilder: (context, trailingBuilder) => IgnorePointer(
+          child: ListTile(
+            title: title,
+            subtitle: subtitle,
+            visualDensity: visualDensity,
+            dense: dense,
+            isThreeLine: isThreeLine,
+            leading: leading,
+            trailing: trailing == null ? null : trailingBuilder(trailing!),
+          ),
         ),
       );
 }
