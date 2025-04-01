@@ -20,6 +20,7 @@ typedef AdvancedChildBuilder = Widget Function(
   BuildContext context,
   WrapperBuilder trailingBuilder,
   void Function() onTap,
+  Animation<double>? animation,
 
   /// For easy use of the API
   // ignore: avoid_positional_boolean_parameters
@@ -392,6 +393,7 @@ class _ExpandableCardState extends State<ExpandableCard>
                       context,
                       _buildTrailing,
                       _handleTap,
+                      _animationController?.view,
                       _expanded,
                     ),
                 ClipRect(
