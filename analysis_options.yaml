@@ -16,7 +16,6 @@ linter:
     # API lint rules
     public_member_api_docs: true
     library_private_types_in_public_api: true
-    package_api_docs: true
     type_annotate_public_apis: true
     # Flutter lint rules
     always_use_package_imports: true
