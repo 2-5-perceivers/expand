@@ -57,6 +57,34 @@ class MainApp extends StatelessWidget {
                   ],
                 ),
               ),
+              ExpandableCard(
+                advancedChildBuilder:
+                    (context, trailingBuilder, onTap, animation, expanded) {
+                  final listTile = ListTile(
+                    title: const Text('Advanced Tile 4'),
+                    trailing: Opacity(
+                      // Use the animation to fade the trailing icon
+                      // when the tile is expanded
+                      opacity: 1 - (animation?.value ?? 0),
+                      child: IconButton(
+                        onPressed: () {
+                          // This click works because the list tile is not wrapped
+                          // in a IgnorePointer as is the case with the ExpandableTile
+                        },
+                        icon: Icon(Icons.abc),
+                      ),
+                    ),
+                    onTap: expanded ? null : onTap,
+                  );
+
+                  if (expanded) return IgnorePointer(child: listTile);
+                  return listTile;
+                },
+                detailsBuilder: (context) => Container(
+                  height: 200,
+                  color: Colors.yellow,
+                ),
+              ),
             ],
           ),
         ),
