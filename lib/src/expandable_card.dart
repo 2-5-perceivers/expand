@@ -50,6 +50,7 @@ class ExpandableCard extends StatefulWidget {
     super.key,
     this.id,
     this.animationDuration,
+    this.expandOnTap = true,
   })  : assert(
           detailsBuilder == null || !initiallyExpanded,
           'Cannot start expanded if detailsBuilder is not null',
@@ -132,6 +133,12 @@ class ExpandableCard extends StatefulWidget {
 
   /// If this card should start expanded
   final bool initiallyExpanded;
+
+  /// If this flag is true the [_onHandleTap] method will
+  /// be called automatically when tapping on the child.
+  /// Tapping on the child will automatically toggle
+  /// the expand state of the widget.
+  final bool expandOnTap;
 
   @override
   State<ExpandableCard> createState() => _ExpandableCardState();
@@ -378,7 +385,9 @@ class _ExpandableCardState extends State<ExpandableCard>
         surfaceTintColor: theme.colorScheme.surfaceTint,
         shape: _cardShape?.value ?? shapeCollapsed,
         child: InkWell(
-          onTap: widget.detailsBuilder != null ? _handleTap : null,
+          onTap: widget.detailsBuilder != null && widget.expandOnTap
+              ? _handleTap
+              : null,
           child: Padding(
             padding: _cardPadding?.value ?? paddingCollapsed!,
             child: Column(
